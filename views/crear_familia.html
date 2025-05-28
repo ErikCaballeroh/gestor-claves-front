@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Categorias</title>
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="icon" href="../assets/logo.png" type="image/x-icon">
+    <script type="module" src="../js/axios.min.js"></script>
+</head>
+<!-- Modal para crear familia -->
+<div class="modal fade" id="modalCrearFamilia" tabindex="-1" aria-labelledby="modalCrearFamiliaLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCrearFamiliaLabel">Crear Nueva Familia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCrearFamilia">
+                    <div class="mb-3">
+                        <label for="nombre-familia" class="form-label">Nombre de la Familia</label>
+                        <input type="text" class="form-control" id="nombre-familia" required>
+                        <div class="form-text">Al crear una familia, te convertirás en el líder de la misma.</div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-familia">Crear Familia</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para crear invitación -->
+<div class="modal fade" id="modalCrearInvitacion" tabindex="-1" aria-labelledby="modalCrearInvitacionLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCrearInvitacionLabel">Generar Invitación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCrearInvitacion">
+                    <div class="mb-3">
+                        <label for="fecha-vencimiento" class="form-label">Fecha de Vencimiento</label>
+                        <input type="date" class="form-control" id="fecha-vencimiento" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="token-invitacion" class="form-label">Token de Invitación</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="token-invitacion" readonly>
+                            <button class="btn btn-outline-secondary" type="button" id="btn-copiar-token">
+                                <i class="lni lni-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Generar Invitación</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="lni lni-key-1"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a href="dashboard.html">Gestor Claves</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="lni lni-key-1"></i>
+                        <span>Mis Claves</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Familia</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="crear_familia.html" class="sidebar-link">Crear una familia</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="compartidas.html" class="sidebar-link">Contraseñas compartidas</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="gestionar_familias.html" class="sidebar-link">Gestionar familia</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_usuarios.html" class="sidebar-link">
+                        <i class="lni lni-target-user"></i>
+                        <span>Gestionar Usuarios</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_categorias.html" class="sidebar-link">
+                        <i class="lni lni-dashboard-square-1"></i>
+                        <span>Gestionar Categorias</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_familias.html" class="sidebar-link">
+                        <i class="lni lni-hierarchy-1"></i>
+                        <span>Gestionar Familias</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="cuenta.html" class="sidebar-link">
+                        <i class="lni lni-user-4"></i>
+                        <span>Cuenta</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" id="logout" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Reemplaza el contenido dentro de <div class="main p-3"> en crear_familia.html -->
+        <div class="main p-3">
+            <div class="text-justify">
+                <h1>Crear Familia</h1>
+
+                <!-- Sección para crear familia (visible si no tiene familia) -->
+                <div class="card mb-4" id="card-crear-familia">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="lni lni-plus"></i> Crear Nueva Familia
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Al crear una familia, te convertirás automáticamente en el líder de la misma.</p>
+                        <button class="btn btn-primary" id="btn-crear-familia" data-bs-toggle="modal"
+                            data-bs-target="#modalCrearFamilia">
+                            Crear Familia
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card mb-4" id="card-aceptar-invitacion">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="lni lni-plus"></i> Aceptar invitación
+                        </h5>
+                    </div>
+                    <div class="card-body row align-items-center">
+                        <div class="col-md-8 col-12 mb-2 mb-md-0">
+                            <input type="text" class="form-control" placeholder="Ingresa tu token" id="token">
+                        </div>
+                        <div class="col-md-4 col-12 d-flex">
+                            <button class="btn btn-primary w-100" style="white-space: nowrap;" id="aceptar-invitacion">
+                                Aceptar invitación
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script type="module" src="../js/jquery.min.js"></script>
+        <script type="module" src="../js/sidebar.js"></script>
+        <script type="module" src="../js/bootstrap.min.js"></script>
+        <script type="module" src="../js/sweetalert2.min.js"></script>
+        <script type="module" src="../js/crear_familia.js"></script>
+</body>
+
+</html>

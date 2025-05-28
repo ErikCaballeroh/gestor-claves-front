@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Contraseñas</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" href="../assets/logo.png" type="image/x-icon">
+    <script type="module" src="../js/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box login">
+            <form id="login-form" action="">
+                <h1>Iniciar Sesión</h1>
+                <div class="input-box">
+                    <input type="text" id="username" placeholder="Usuario" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#" id="olvidar">¿Olvidaste la contraseña?</a>
+                </div>
+                <button type="submit" class="btn">Iniciar Sesión</button>
+            </form>
+        </div>
+        <div class="form-box register">
+            <form id="form-registro">
+                <h1>Registrarse</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Usuario" required id="usuario">
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="email" placeholder="Correo" required id="correo">
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Contraseña" required id="contrasena">
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <button type="submit" class="btn">Registrate</button>
+            </form>
+        </div>
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <h1>Hola, Bienvenido </h1>
+                <img src="../assets/login.png">
+                <p>¿No tienes una cuenta?</p>
+                <button class="btn register-btn">Registrar</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1>Hola De Nuevo </h1>
+                <img src="../assets/registro.png">
+                <p>¿Ya tienes una cuenta?</p>
+                <button class="btn login-btn">Iniciar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/jquery.min.js"></script>
+    <script type="module" src="../js/sweetalert2.min.js"></script>
+    <script type="module" src="../js/login.js"></script>
+</body>
+
+</html>

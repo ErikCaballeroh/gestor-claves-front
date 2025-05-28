@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="icon" href="../assets/logo.png" type="image/x-icon">
+    <script type="module" src="../js/axios.min.js"></script>
+</head>
+<!-- Modal para editar clave -->
+<div class="modal fade" id="modalEditarClave" tabindex="-1" aria-labelledby="modalEditarClaveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarClaveLabel">Editar Clave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarClave">
+                    <input type="hidden" id="editar-id-clave">
+                    <div class="mb-3">
+                        <label for="editar-sitio" class="form-label">Sitio</label>
+                        <input type="text" class="form-control" id="editar-sitio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-nombre-clave" class="form-label">Nombre Clave</label>
+                        <input type="text" class="form-control" id="editar-nombre-clave" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="editar-categoria"></select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-usuario" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="editar-usuario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-clave" class="form-label">Clave</label>
+                        <input type="text" class="form-control" id="editar-clave" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-compartir" class="form-label">Compartir con familia</label>
+                        <select class="form-select" id="editar-compartir">
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-danger" id="btnEliminarClave">Eliminar Clave</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para crear clave -->
+<div class="modal fade" id="modalCrearClave" tabindex="-1" aria-labelledby="modalCrearClaveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCrearClaveLabel">Nueva Clave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCrearClave">
+                    <div class="mb-3">
+                        <label for="crear-sitio" class="form-label">Sitio</label>
+                        <input type="text" class="form-control" id="crear-sitio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="crear-nombre-clave" class="form-label">Nombre Clave</label>
+                        <input type="text" class="form-control" id="crear-nombre-clave" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="crear-categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="crear-categoria" required></select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="crear-usuario" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="crear-usuario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="crear-clave" class="form-label">Clave</label>
+                        <input type="text" class="form-control" id="crear-clave" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="crear-compartir" class="form-label">Compartir con familia</label>
+                        <select class="form-select" id="crear-compartir" required>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Guardar Clave</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="lni lni-key-1"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a href="dashboard.html">Gestor Claves</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="lni lni-key-1"></i>
+                        <span>Mis Claves</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Familia</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="crear_familia" class="sidebar-link">Crear una familia</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="compartidas.html" class="sidebar-link">Contraseñas compartidas</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="gestionar_familias.html" class="sidebar-link">Gestionar familia</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_usuarios.html" class="sidebar-link">
+                        <i class="lni lni-target-user"></i>
+                        <span>Gestionar Usuarios</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_categorias.html" class="sidebar-link">
+                        <i class="lni lni-dashboard-square-1"></i>
+                        <span>Gestionar Categorias</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_familias.html" class="sidebar-link">
+                        <i class="lni lni-hierarchy-1"></i>
+                        <span>Gestionar Familias</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="cuenta.html" class="sidebar-link">
+                        <i class="lni lni-user-4"></i>
+                        <span>Cuenta</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" id="logout" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main p-3">
+            <div class="text-justify">
+                <h1>
+                    Mis Claves
+                </h1>
+                <h5 id="bienvenida">Bienvenido, </h5>
+                <br>
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" id="buscador" class="form-control" placeholder="Buscar clave"
+                    aria-label="Buscar Clave" aria-describedby="button-addon2">
+                <select class="form-select" aria-label="select-categoria" id="select-categoria">
+                    <option selected value="todos">Filtrar por categoria</option>
+                </select>
+            </div>
+            <div class="table-responsive">
+                <table class="table" id="tabla">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Sitio</th>
+                            <th scope="col">Nombre Clave</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Usuario/Correo</th>
+                            <th scope="col">Clave</th>
+                            <th scope="col">Ver</th>
+                            <th scope="col">Compartir con familia</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+
+                    </tbody>
+                </table>
+            </div>
+            <button id="fab" class="fab">
+                <i class="lni lni-plus"></i>
+            </button>
+
+        </div>
+    </div>
+    <script type="module" src="../js/jquery.min.js"></script>
+    <script type="module" src="../js/bootstrap.min.js"></script>
+    <script type="module" src="../js/dashboard.js"></script>
+    <script type="module" src="../js/sidebar.js"></script>
+</body>
+
+</html>

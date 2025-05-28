@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Usuarios</title>
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="icon" href="../assets/logo.png" type="image/x-icon">
+    <script type="module" src="../js/axios.min.js"></script>
+</head>
+<!-- Modal para editar usuarios -->
+<div class="modal fade" id="modalEditarUsuarios" tabindex="-1" aria-labelledby="modalEditarUsuariosLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarUsuariosLabel">Editar Clave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarUsuarios">
+                    <input type="hidden" id="editar-id-usuario">
+                    <div class="mb-3">
+                        <label for="editar-nombre-usuario" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="editar-nombre-usuario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-email-usuario" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="editar-email-usuario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-clave-usuario" class="form-label">Clave</label>
+                        <input type="text" class="form-control" id="editar-clave-usuario"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-rol-usuario" class="form-label">Rol</label>
+                        <input type="text" class="form-control" id="editar-rol-usuario" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editar-familia-usuario" class="form-label">Familia</label>
+                        <input type="text" class="form-control" id="editar-familia-usuario" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-danger" id="btnEliminarUsuario">Eliminar Usuario</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="lni lni-key-1"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a href="dashboard.html">Gestor Claves</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="lni lni-key-1"></i>
+                        <span>Mis Claves</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Familia</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="crear_familia" class="sidebar-link">Crear una familia</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="compartidas.html" class="sidebar-link">Contraseñas compartidas</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="gestionar_familia.html" class="sidebar-link">Gestionar familia</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_usuarios.html" class="sidebar-link">
+                        <i class="lni lni-target-user"></i>
+                        <span>Gestionar Usuarios</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_categorias.html" class="sidebar-link">
+                        <i class="lni lni-dashboard-square-1"></i>
+                        <span>Gestionar Categorias</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="gestionar_familias.html" class="sidebar-link">
+                        <i class="lni lni-hierarchy-1"></i>
+                        <span>Gestionar Familias</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="cuenta.html" class="sidebar-link">
+                        <i class="lni lni-user-4"></i>
+                        <span>Cuenta</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" id="logout" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main p-3">
+            <div class="text-justify">
+                <h1>
+                    Usuarios Del Sistema
+                </h1>
+                <h5 id="bienvenida">Gestión de Usuarios - Administrador: </h5>
+                <br>
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" id="buscador" class="form-control" placeholder="Buscar usuario"
+                    aria-label="Buscar Clave" aria-describedby="button-addon2">
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Clave</th>
+                            <th scope="col">Rol</th>
+                            <th scope="col">Familia</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../js/jquery.min.js"></script>
+    <script type="module" src="../js/sidebar.js"></script>
+    <script type="module" src="../js/bootstrap.min.js"></script>
+    <script type="module" src="../js/gestionar_usuarios.js"></script>
+</body>
+
+</html>
