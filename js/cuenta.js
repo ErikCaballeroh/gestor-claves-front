@@ -24,7 +24,7 @@ axios.get('https://api-gestor-claves.up.railway.app/api/auth/session', {
 
     // Redirigir después de 2 segundos (2000 milisegundos)
     setTimeout(() => {
-      window.location.href = 'index.html';
+      window.location.href = '/index.html';
     }, 1000);
   });
 
@@ -116,7 +116,7 @@ async function logout() {
       sessionStorage.clear();
 
       // Redirigir al login
-      window.location.href = 'index.html';
+      window.location.href = '/index.html';
     }
   } catch (error) {
     console.error('Error al cerrar sesión:', error);
