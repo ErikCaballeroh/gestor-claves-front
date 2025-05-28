@@ -17,7 +17,7 @@ form.addEventListener('submit', async (event) => {
         if (response.status === 200) {
             alert('Inicio de sesión exitoso');
             console.log('Usuario logueado:', response.data.user);
-            window.location.href = '/views/dashboard.html'; // 👈 Redirige al dashboard
+            window.location.href = './views/dashboard.html'; // 👈 Redirige al dashboard
         }
     } catch (error) {
         if (error.response) {
